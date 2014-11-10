@@ -170,8 +170,12 @@
       (seq-merge (merge-sort a)
                  (merge-sort b)))))
 
+(defn rinits [a-seq]
+  (reverse (inits a-seq)))
+
 (defn split-into-monotonics [a-seq]
-  [:-])
+  (if (empty? a-seq) '()
+    '()))
 
 (defn permutations [a-set]
   [:-])
