@@ -173,9 +173,25 @@
 (defn rinits [a-seq]
   (reverse (inits a-seq)))
 
+(defn next-monotonic [inits-seq]
+  (if (empty? inits-seq)
+    nil
+    (let [f (first inits-seq)]
+      (cond
+        (empty? f) 
+          (next-monotonic (rest inits-seq))
+        (or (apply <= f) (apply >= f))
+          (let [r (next-monotonic (rest inits-seq))]
+            (if (nil? r) f r))
+        :else nil))))
+
 (defn split-into-monotonics [a-seq]
   (if (empty? a-seq) '()
-    '()))
+    (let [ri (rinits a-seq)
+          next-mon (next-monotonic ri)]
+      (cons next-mon
+            (split-into-monotonics
+              (drop (count next-mon) a-seq))))))
 
 (defn permutations [a-set]
   [:-])
