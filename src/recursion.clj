@@ -193,8 +193,16 @@
             (split-into-monotonics
               (drop (count next-mon) a-seq))))))
 
+(defn permutations-inner [n a-set]
+  (cond
+    (or (empty? a-set) (singleton? a-set)) a-set
+    (== (count a-set) n) '()
+    :else '()))
+
 (defn permutations [a-set]
-  [:-])
+  (if
+    (empty? a-set) a-set
+    (permutations-inner 1 a-set)))
 
 (defn powerset [a-set]
   [:-])
