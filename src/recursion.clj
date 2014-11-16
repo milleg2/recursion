@@ -193,16 +193,27 @@
             (split-into-monotonics
               (drop (count next-mon) a-seq))))))
 
-(defn permutations-inner [n a-set]
-  (cond
-    (or (empty? a-set) (singleton? a-set)) a-set
-    (== (count a-set) n) '()
-    :else '()))
+(defn permutations [a-seq]
+  (let [permutations-inner
+        (fn [a-seq]
+          (cond
+            (empty? a-seq) '(())
+            (singleton? a-seq) (list a-seq)
+            :else (map (fn [x] (cons (first a-seq) x))
+                       (permutations (rest a-seq)))))]
 
-(defn permutations [a-set]
-  (if
-    (empty? a-set) a-set
-    (permutations-inner 1 a-set)))
+   (if (empty? a-seq)
+    '(())
+    (loop [rem (rest a-seq)
+           curr a-seq
+           build '()]
+      (if (empty? rem)
+        (concat build (permutations-inner curr))
+        (let [new-seq (concat (rest curr)
+                              (list (first curr)))]
+          (recur (rest rem)
+                 new-seq
+                 (concat build (permutations-inner curr)))))))))
 
 (defn powerset [a-set]
   [:-])
