@@ -1,5 +1,7 @@
 (ns recursion)
 
+(use 'clojure.set)
+
 (defn product [coll]
   (if (empty? coll)
     1
@@ -216,5 +218,16 @@
                  (concat build (permutations-inner curr)))))))))
 
 (defn powerset [a-set]
-  [:-])
+  (if (empty? a-set)
+    #{#{}}
+    (loop [rem (rest a-set)
+           f (first a-set)
+           build #{#{}}]
+      (let [m (map (fn [x] (conj x f)) build)
+            u (union build m)]
+        (if (empty? rem)
+          u
+          (recur (rest rem)
+                 (first rem)
+                 u))))))
 
